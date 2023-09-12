@@ -64,6 +64,8 @@ app.put('/api/:id', (req, res) => {
 	});
   });
 
+
+  
 mongoose.set('strictQuery', false)
 mongoose
 .connect("mongodb+srv://root:JESUSu12@cluster0.spwdfxi.mongodb.net/Node-API?retryWrites=true&w=majority")

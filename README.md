@@ -72,12 +72,10 @@ To remove a person by ID, send a DELETE request to /api/{id} where {id} is the p
 - Example:
 curl -X DELETE http://localhost:5000/api/1
 
-For more detailed documentation and response formats, please refer to the DOCUMENTATION.md file.
+For more detailed documentation and response formats, please refer to the **DOCUMENTATION.md** file.
 
 ### Known Limitations
 * This is a simplified example and may not cover all production-level concerns such as authentication and validation.
 * No authentication or authorization mechanisms are implemented.
 * Error handling is minimal and should be improved for production use.
 
-### License
-This project is licensed under the MIT License. See the [LICENCE](https://chat.openai.com/c/LICENSE) file for details.
