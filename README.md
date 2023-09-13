@@ -35,7 +35,7 @@ Before you begin, ensure you have met the following requirements:
 
 2. Navigate to the project directory
     ```bash
-    cd mongoose_Ex
+    cd hng-tas-2
 
 3. Install dependencies
     ```bash
@@ -45,7 +45,7 @@ Before you begin, ensure you have met the following requirements:
     ```bash
     node app.js
 
-- Your API should now be running at 'http://localhost:{port}'
+- Your API should now be running at 'http://localhost:{port}/api'
 
 ### Usage
 You can interact with the API using HTTP requests. Here are some examples
@@ -60,17 +60,17 @@ To add a new person, send a POST request to /api with the person's name in the r
 To fetch details of a person by ID, send a GET request to /api/{id} where {id} is the person's ID.
 - Example:
     ```bash
-    curl http://localhost:5000/api/1
+    curl http://localhost:5000/api/user/name
 
 ### Updating Person Details
 To update the details of an existing person by ID, send a PUT request to /api/{id} with the updated name in the request body.
 - Example:
-curl -X PUT -H "Content-Type: application/json" -d '{"name": "Updated Name"}' http://localhost:5000/api/1
+curl -X PUT -H "Content-Type: application/json" -d '{"name": "Updated Name"}' http://localhost:5000/api/user/name
 
 ### Deleting a Person
 To remove a person by ID, send a DELETE request to /api/{id} where {id} is the person's ID.
 - Example:
-curl -X DELETE http://localhost:5000/api/1
+curl -X DELETE http://localhost:5000/api/user/name
 
 For more detailed documentation and response formats, please refer to the **DOCUMENTATION.md** file.
 
@@ -78,4 +78,3 @@ For more detailed documentation and response formats, please refer to the **DOCU
 * This is a simplified example and may not cover all production-level concerns such as authentication and validation.
 * No authentication or authorization mechanisms are implemented.
 * Error handling is minimal and should be improved for production use.
-
