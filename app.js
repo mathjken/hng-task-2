@@ -1,57 +1,55 @@
-var express = require("express");
-var app = express();
-var bodyParser = require("body-parser");
-var mongoose = require("mongoose");
+const express = require("express");
+const app = express();
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 const Person = require("./models/productModel");
-var port = process.env.PORT || 5000;
+const port = process.env.PORT || 5000;
 
-
-app.use(express.json())
-app.use(express.urlencoded({extended: false}))
-
-
-//routes
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 // POST a person
-app.post('/api', async(req, res) => {
+app.post('/api', async (req, res) => {
     try {
-        const users = await Person.create(req.body)
-        res.status(200).json(users);
-        
+        const user = await Person.create(req.body);
+        res.status(200).json(user);
     } catch (error) {
-        console.log(error.message);
-        res.status(500).json({message: error.message})
+        console.error(error.message);
+        res.status(500).json({ message: error.message });
     }
-})
+});
 
-// GET a person
-app.get('/api/user_id', async(req, res) => {
+// GET all persons
+app.get('/api/users', async (req, res) => {
     try {
-        const user_id = await Person.find({});
-        res.status(200).json(user_id);
-    } catch (error) {
-        res.status(500).json({message: error.message})
-    }
-})
-
-app.get('/api/user_id/:id', async(req, res) =>{
-    try {
-        const {id} = req.params;
-        const users = await Person.findById(id);
+        const users = await Person.find({});
         res.status(200).json(users);
     } catch (error) {
-        res.status(500).json({message: error.message})
+        res.status(500).json({ message: error.message });
     }
-})
+});
 
-// UPDATE a person
-app.put('/api/user_id/:id', async (req, res) => {
+// GET a person by name
+app.get('/api/users/:name', async (req, res) => {
     try {
-        const { id } = req.params;
-        const updatedUser = await Person.findByIdAndUpdate(id, req.body);
-        // Check if the user was not found in the database
+        const { name } = req.params;
+        const user = await Person.findOne({ name });
+        if (!user) {
+            return res.status(404).json({ message: `Cannot find any person with name ${name}` });
+        }
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// UPDATE a person by name
+app.put('/api/users/:name', async (req, res) => {
+    try {
+        const { name } = req.params;
+        const updatedUser = await Person.findOneAndUpdate({ name }, req.body, { new: true });
         if (!updatedUser) {
-            return res.status(404).json({ message: `Cannot find any person with ID ${id}` });
+            return res.status(404).json({ message: `Cannot find any person with name ${name}` });
         }
         res.status(200).json(updatedUser);
     } catch (error) {
@@ -59,14 +57,13 @@ app.put('/api/user_id/:id', async (req, res) => {
     }
 });
 
-// DELETE a person
-app.delete('/api/user_id/:id', async (req, res) => {
+// DELETE a person by name
+app.delete('/api/users/:name', async (req, res) => {
     try {
-        const { id } = req.params;
-        const deletedUser = await Person.findByIdAndDelete(id);
-        // Check if the user was not found in the database
+        const { name } = req.params;
+        const deletedUser = await Person.findOneAndDelete({ name });
         if (!deletedUser) {
-            return res.status(404).json({ message: `Cannot find any person with ID ${id}` });
+            return res.status(404).json({ message: `Cannot find any person with name ${name}` });
         }
         res.status(200).json(deletedUser);
     } catch (error) {
@@ -75,14 +72,17 @@ app.delete('/api/user_id/:id', async (req, res) => {
 });
 
 // connect to database
-mongoose.set('strictQuery', false)
 mongoose
-.connect("mongodb+srv://root:JESUSu12@cluster0.spwdfxi.mongodb.net/Node-API?retryWrites=true&w=majority")
-.then(() => {
-	console.log('connected to mongoDB')
-	app.listen(port, function() {
-		console.log("Node API app is listening on port" + port);
-	});
-}).catch(() => {
-	console.log(error)
-})
+    .connect("mongodb+srv://root:JESUSu12@cluster0.spwdfxi.mongodb.net/Node-API?retryWrites=true&w=majority", {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    })
+    .then(() => {
+        console.log('Connected to MongoDB');
+        app.listen(port, function () {
+            console.log("Node API app is listening on port " + port);
+        });
+    })
+    .catch((error) => {
+        console.error('Error connecting to MongoDB:', error);
+    });
