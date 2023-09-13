@@ -8,36 +8,11 @@ var port = process.env.PORT || 5000;
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
+
 //routes
 
-app.get('/', (req, res) => {
-    res.send('Hello NODE API')
-})
-
-app.get('/blog', (req, res) => {
-    res.send('Hello Blog, My name is Johnkennedy')
-})
-
-app.get('/users', async(req, res) => {
-    try {
-        const users = await Person.find({});
-        res.status(200).json(users);
-    } catch (error) {
-        res.status(500).json({message: error.message})
-    }
-})
-
-app.get('/users/:id', async(req, res) =>{
-    try {
-        const {id} = req.params;
-        const users = await Person.findById(id);
-        res.status(200).json(users);
-    } catch (error) {
-        res.status(500).json({message: error.message})
-    }
-})
-
-app.post('/users', async(req, res) => {
+// POST
+app.post('/api', async(req, res) => {
     try {
         const users = await Person.create(req.body)
         res.status(200).json(users);
@@ -48,8 +23,31 @@ app.post('/users', async(req, res) => {
     }
 })
 
-// update a product
-app.put('/users/:id', async(req, res) => {
+// GET
+app.get('/', (req, res) => {
+    res.send('Hello my name is Johnkennedy')
+})
+app.get('/api/users', async(req, res) => {
+    try {
+        const users = await Person.find({});
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+})
+
+app.get('/api/users/:id', async(req, res) =>{
+    try {
+        const {id} = req.params;
+        const users = await Person.findById(id);
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+})
+
+// update a person
+app.put('/api/users/:id', async(req, res) => {
     try {
         const {id} = req.params;
         const users = await Person.findByIdAndUpdate(id, req.body);
@@ -66,8 +64,7 @@ app.put('/users/:id', async(req, res) => {
 })
 
 // delete a product
-
-app.delete('/users/:id', async(req, res) =>{
+app.delete('/api/users/:id', async(req, res) =>{
     try {
         const {id} = req.params;
         const users = await Person.findByIdAndDelete(id);
@@ -82,7 +79,6 @@ app.delete('/users/:id', async(req, res) =>{
 })
 
 
-  
 mongoose.set('strictQuery', false)
 mongoose
 .connect("mongodb+srv://root:JESUSu12@cluster0.spwdfxi.mongodb.net/Node-API?retryWrites=true&w=majority")
