@@ -5,13 +5,14 @@ var mongoose = require("mongoose");
 const Person = require("./models/productModel");
 var port = process.env.PORT || 5000;
 
+
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
 
 //routes
 
-// POST
+// POST a person
 app.post('/api', async(req, res) => {
     try {
         const users = await Person.create(req.body)
@@ -23,20 +24,17 @@ app.post('/api', async(req, res) => {
     }
 })
 
-// GET
-app.get('/', (req, res) => {
-    res.send('Hello my name is Johnkennedy')
-})
-app.get('/api/users', async(req, res) => {
+// GET a person
+app.get('/api/user_id', async(req, res) => {
     try {
-        const users = await Person.find({});
-        res.status(200).json(users);
+        const user_id = await Person.find({});
+        res.status(200).json(user_id);
     } catch (error) {
         res.status(500).json({message: error.message})
     }
 })
 
-app.get('/api/users/:id', async(req, res) =>{
+app.get('/api/user_id/:id', async(req, res) =>{
     try {
         const {id} = req.params;
         const users = await Person.findById(id);
@@ -46,39 +44,37 @@ app.get('/api/users/:id', async(req, res) =>{
     }
 })
 
-// update a person
-app.put('/api/users/:id', async(req, res) => {
+// UPDATE a person
+app.put('/api/user_id/:id', async (req, res) => {
     try {
-        const {id} = req.params;
-        const users = await Person.findByIdAndUpdate(id, req.body);
-        // we cannot find any product in database
-        if(!person){
-            return res.status(404).json({message: `cannot find any product with ID ${id}`})
+        const { id } = req.params;
+        const updatedUser = await Person.findByIdAndUpdate(id, req.body);
+        // Check if the user was not found in the database
+        if (!updatedUser) {
+            return res.status(404).json({ message: `Cannot find any person with ID ${id}` });
         }
-        const updatedPerson = await Person.findById(id);
-        res.status(200).json(updatedPerson);
-        
+        res.status(200).json(updatedUser);
     } catch (error) {
-        res.status(500).json({message: error.message})
+        res.status(500).json({ message: error.message });
     }
-})
+});
 
-// delete a product
-app.delete('/api/users/:id', async(req, res) =>{
+// DELETE a person
+app.delete('/api/user_id/:id', async (req, res) => {
     try {
-        const {id} = req.params;
-        const users = await Person.findByIdAndDelete(id);
-        if(!person){
-            return res.status(404).json({message: `cannot find any product with ID ${id}`})
+        const { id } = req.params;
+        const deletedUser = await Person.findByIdAndDelete(id);
+        // Check if the user was not found in the database
+        if (!deletedUser) {
+            return res.status(404).json({ message: `Cannot find any person with ID ${id}` });
         }
-        res.status(200).json(users);
-        
+        res.status(200).json(deletedUser);
     } catch (error) {
-        res.status(500).json({message: error.message})
+        res.status(500).json({ message: error.message });
     }
-})
+});
 
-
+// connect to database
 mongoose.set('strictQuery', false)
 mongoose
 .connect("mongodb+srv://root:JESUSu12@cluster0.spwdfxi.mongodb.net/Node-API?retryWrites=true&w=majority")
