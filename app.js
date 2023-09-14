@@ -10,10 +10,9 @@ app.use(express.urlencoded({ extended: false }));
 
 
 // POST a person
-app.post('/api/:name', async (req, res) => {
+app.post('/api', async (req, res) => {
     try {
-        const { name } = req.params;
-        const user = await Person.create({ name, ...req.body });
+        const user = await Person.create(req.body);
         res.status(200).json(user);
     } catch (error) {
         console.error(error.message);
@@ -21,8 +20,8 @@ app.post('/api/:name', async (req, res) => {
     }
 });
 
-// GET a person by name
 
+// GET a list of all persons in database
 app.get('/api', async (req, res) => {
     try {
         const persons = await Person.find({});
@@ -32,6 +31,7 @@ app.get('/api', async (req, res) => {
     }
 });
 
+// GET a person by name
 app.get('/api/:name', async (req, res) => {
     try {
         const { name } = req.params;
