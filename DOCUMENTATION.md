@@ -2,7 +2,7 @@
 
 ## Standard Request and Response Formats
 
-### Create a new Person (POST `/api/:name`)
+### Create a new Person (POST `/api`)
 
 * Request Format:
 
