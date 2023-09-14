@@ -2,7 +2,7 @@
 
 ## Standard Request and Response Formats
 
-### Create a Person (POST `/api`)
+### Create a Person (POST `/api/users/name`)
 
 **Request Format:**
     ```json
@@ -20,7 +20,7 @@
             "__v": 0
         }
 
-### Fetch Person Details (GET /api/user/name)
+### Fetch Person Details (GET /api/users/name)
 ***Response Format (Success):**
     ```json
        {

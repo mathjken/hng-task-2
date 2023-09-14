@@ -9,22 +9,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // POST a person
-app.post('/api', async (req, res) => {
+app.post('/api/users/:name', async (req, res) => {
     try {
-        const user = await Person.create(req.body);
+        const { name } = req.params;
+        const user = await Person.create({ name, ...req.body });
         res.status(200).json(user);
     } catch (error) {
         console.error(error.message);
-        res.status(500).json({ message: error.message });
-    }
-});
-
-// GET all persons
-app.get('/api/users', async (req, res) => {
-    try {
-        const users = await Person.find({});
-        res.status(200).json(users);
-    } catch (error) {
         res.status(500).json({ message: error.message });
     }
 });
