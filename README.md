@@ -31,7 +31,7 @@ Before you begin, ensure you have met the following requirements:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/your-api.git
+   git clone https://github.com/mathjken/hng-task-2.git
 
 2. Navigate to the project directory
     ```bash
@@ -60,17 +60,17 @@ To add a new person, send a POST request to /api with the person's name in the r
 To fetch details of a person by ID, send a GET request to /api/{id} where {id} is the person's ID.
 - Example:
     ```bash
-    curl http://localhost:5000/api/users/name
+    curl http://localhost:5000/api/name
 
 ### Updating Person Details
 To update the details of an existing person by ID, send a PUT request to /api/{id} with the updated name in the request body.
 - Example:
-curl -X PUT -H "Content-Type: application/json" -d '{"name": "Updated Name"}' http://localhost:5000/api/user/name
+curl -X PUT -H "Content-Type: application/json" -d '{"name": "Updated Name"}' http://localhost:5000/api/users/name
 
 ### Deleting a Person
-To remove a person by ID, send a DELETE request to /api/users/name.
+To remove a person by ID, send a DELETE request to /api/name.
 - Example:
-curl -X DELETE http://localhost:5000/api/users/name
+curl -X DELETE http://localhost:5000/api/name
 
 For more detailed documentation and response formats, please refer to the **DOCUMENTATION.md** file.
 

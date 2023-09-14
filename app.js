@@ -8,8 +8,9 @@ const port = process.env.PORT || 5000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+
 // POST a person
-app.post('/api/users/:name', async (req, res) => {
+app.post('/api/:name', async (req, res) => {
     try {
         const { name } = req.params;
         const user = await Person.create({ name, ...req.body });
@@ -21,7 +22,17 @@ app.post('/api/users/:name', async (req, res) => {
 });
 
 // GET a person by name
-app.get('/api/users/:name', async (req, res) => {
+
+app.get('/api', async (req, res) => {
+    try {
+        const persons = await Person.find({});
+        res.status(200).json(persons);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+app.get('/api/:name', async (req, res) => {
     try {
         const { name } = req.params;
         const user = await Person.findOne({ name });
@@ -34,8 +45,9 @@ app.get('/api/users/:name', async (req, res) => {
     }
 });
 
+
 // UPDATE a person by name
-app.put('/api/users/:name', async (req, res) => {
+app.put('/api/:name', async (req, res) => {
     try {
         const { name } = req.params;
         const updatedUser = await Person.findOneAndUpdate({ name }, req.body, { new: true });
@@ -49,7 +61,7 @@ app.put('/api/users/:name', async (req, res) => {
 });
 
 // DELETE a person by name
-app.delete('/api/users/:name', async (req, res) => {
+app.delete('/api/:name', async (req, res) => {
     try {
         const { name } = req.params;
         const deletedUser = await Person.findOneAndDelete({ name });
@@ -61,6 +73,7 @@ app.delete('/api/users/:name', async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
+
 
 // connect to database
 mongoose
